@@ -6,31 +6,45 @@ import ppl from "./ppl.json";
 import "./App.css";
 
 class App extends Component {
-  // Setting this.state.friends to the friends json array
   state = {
     ppl: ppl, 
-    status: false
-    
-    
+    score: 0,
+    guess: "",
+    highScore: 0,
   };
 
-  clickEvent = () => {
-    alert("click")
-   
-  this.setState({status: true})
-  }
-  /*removeFriend = id => {
-    // Filter this.state.friends for friends with an id not equal to the id being removed
-    const friends = this.state.friends.filter(friend => friend.id !== id);
-    // Set this.state.friends equal to the new friends array
-    this.setState({ friends });
-  };*/
+  clickEvent = id => {
+    var choise = this.state.ppl.filter(person => person.id ===id);
+    ppl.sort(function(){return 0.5 - Math.random()}); 
 
-  // Map over this.state.friends and render a FriendCard component for each friend object
+    if (choise[0].status === false){
+        choise[0].status = true; 
+        this.setState({choise})
+        this.setState({score: this.state.score +1})
+        this.setState({guess: "Well done!"})
+        this.setState({highScore: this.state.highScore +1})
+    } else {
+      this.setState({score: 0})
+      this.setState({guess: "Wrong!"})
+      this.reset(); 
+      
+    }  
+
+  }
+  reset = () => {
+      var guys = this.state.ppl
+      for (var i = 0; i < guys.length; i++){
+        guys[i].status = false;
+      }
+      this.setState({ppl: guys})
+   }
+   //if (this.state.highScore <= this.state.score ){
+    //this.setState({highScore: this.state.highScore +1})
+        //}
   render() {
     return (
       <div>
-      <Header />
+      <Header score={this.state.score} guess={this.state.guess} highScore={this.state.highScore} />
       <Wrapper>
         
         {this.state.ppl.map(person =>(
@@ -39,7 +53,7 @@ class App extends Component {
             key={person.id}
             name={person.name}
             image={person.image}
-            status={this.state.status}
+            status={person.status}
             clickEvent={this.clickEvent}
           />
         ))}
