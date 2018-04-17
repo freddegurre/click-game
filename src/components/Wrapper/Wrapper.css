@@ -1,7 +1,8 @@
 .wrapper {
+  height: 100vh; 
+  margin-top: 50px;
   padding-top: 50px;
   background: #ECEFF1;
-  height: 100%;
   display: flex;
   flex-flow: row wrap;
   padding: 20px;
